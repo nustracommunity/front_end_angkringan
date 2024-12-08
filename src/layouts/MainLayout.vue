@@ -28,6 +28,18 @@
           :key="link.title"
           v-bind="link"
         />
+        <div class="row">
+          <q-btn
+            style="margin-top: 200%; font-size: 14px; width: 100%"
+            label="Logout"
+            icon="logout"
+            color="negative"
+            size="sm"
+            @click="logout"
+            :loading="isLoading"
+            :disable="isLoding"
+          />
+        </div>
       </q-list>
     </q-drawer>
 
@@ -39,6 +51,7 @@
 
 <script setup>
 import { ref } from "vue";
+import { api } from "boot/axios";
 import EssentialLink from "components/EssentialLink.vue";
 
 defineOptions({
@@ -48,45 +61,8 @@ defineOptions({
 const linksList = [
   {
     title: "Docs",
-    caption: "quasar.dev",
     icon: "school",
     link: "https://quasar.dev",
-  },
-  {
-    title: "Github",
-    caption: "github.com/quasarframework",
-    icon: "code",
-    link: "https://github.com/quasarframework",
-  },
-  {
-    title: "Discord Chat Channel",
-    caption: "chat.quasar.dev",
-    icon: "chat",
-    link: "https://chat.quasar.dev",
-  },
-  {
-    title: "Forum",
-    caption: "forum.quasar.dev",
-    icon: "record_voice_over",
-    link: "https://forum.quasar.dev",
-  },
-  {
-    title: "Twitter",
-    caption: "@quasarframework",
-    icon: "rss_feed",
-    link: "https://twitter.quasar.dev",
-  },
-  {
-    title: "Facebook",
-    caption: "@QuasarFramework",
-    icon: "public",
-    link: "https://facebook.quasar.dev",
-  },
-  {
-    title: "Quasar Awesome",
-    caption: "Community Quasar projects",
-    icon: "favorite",
-    link: "https://awesome.quasar.dev",
   },
 ];
 
@@ -95,4 +71,29 @@ const leftDrawerOpen = ref(false);
 function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 }
+</script>
+<script>
+export default {
+  data() {
+    return {
+      isLoading: false,
+      message: "",
+    };
+  },
+  methods: {
+    async logout() {
+      try {
+        this.isLoading = true;
+        const { data } = await api.post("logout", {});
+        if ((data.message = "Logged out successfully")) {
+          localStorage.removeItem("token");
+          this.isLoading = false;
+          this.$router.push("/login");
+        }
+      } catch {
+        this.$q.notify({ type: "negative", message: "Logout failed!" });
+      }
+    },
+  },
+};
 </script>
