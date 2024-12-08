@@ -2,7 +2,7 @@
   <q-page class="flex flex-center">
     <q-form @submit="onLogin">
       <q-input v-model="email" label="Email" type="email" />
-      <q-input v-model="password" label="Password" type="password" />
+      <q-input v-model="password" label="Input Password" type="password" />
       <q-btn label="Login" type="submit" color="primary" />
     </q-form>
   </q-page>
