@@ -27,6 +27,7 @@ const routes = [
             import ("layouts/MainLayout.vue"),
         children: [{ path: "", component: () =>
                 import ("pages/IndexPage.vue") }],
+        meta: { requiresAuth: true },
     },
     {
         path: "/:catchAll(.*)*",

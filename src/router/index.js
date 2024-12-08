@@ -33,9 +33,13 @@ export default route(function( /* { store, ssrContext } */ ) {
         history: createHistory(process.env.VUE_ROUTER_BASE),
     });
     Router.beforeEach((to, from, next) => {
-        const token = localStorage.getItem("token");
-        if (to.meta.requiresAuth && !token) {
-            next("/login");
+        const isAuthenticated = localStorage.getItem("token");
+        if (to.matched.some((record) => record.meta.requiresAuth)) {
+            if (!isAuthenticated) {
+                next("/login");
+            } else {
+                next();
+            }
         } else {
             next();
         }
