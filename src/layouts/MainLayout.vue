@@ -30,7 +30,7 @@
         />
         <div class="row">
           <q-btn
-            style="margin-top: 200%; font-size: 14px; width: 100%"
+            style="margin-top: 100%; font-size: 14px; width: 100%"
             label="Logout"
             icon="logout"
             color="negative"
